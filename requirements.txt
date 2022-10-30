@@ -17,3 +17,4 @@ gunicorn==19.9.0
 scikit-learn==0.22.1
 numpy>=1.9.2
 Cython>=0.28.5
+Flast_RESTful==0.3.8
