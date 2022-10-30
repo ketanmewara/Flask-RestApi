@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify
+from flask import Flask,jsonify
+from flask_restful import Resource, Api, reqparse
 import pickle
 
 #load the model
@@ -7,37 +8,27 @@ model = pickle.load(open('model.pkl','rb'))
 labels = ['Rockstar', '2K', 'Zynga']
 
 app = Flask(__name__)
+api = Api(app)
 
-@app.route('/', methods=['GET'])
-def home():
-    return "Welcome"
+class e_shop(Resource):
+    def get(self):
 
-# endpoint 
-@app.route('/predict', methods=['GET','POST'])
-def predict():
-    try:
-        feat1 = request.args.get('feat1',None)
-        feat2 = request.args.get('feat2',None)
-        feat3 = request.args.get('feat3',None)
-        feat4 = request.args.get('feat4',None)
-
-        data = [[feat1,feat2,feat3,feat4]]
+        parser = reqparse.RequestParser()
+        parser.add_argument('key1', type=int)
+        parser.add_argument('key2', type=int)
+        parser.add_argument('key3', type=int)
+        parser.add_argument('key4', type=int)
         
-        prediction = model.predict(data)
+        params = parser.parse_args()
+        data = list(params.values())
+        print([data])
+
+        prediction = model.predict([data])
         class_prediction = labels[prediction[0]]
-        
+
         return jsonify(prediction=class_prediction)
-            
-    except ValueError as e: #Error handling
-        # return jsonify({"Error":str(e)})
-        if('RandomForestClassifier does not accept missing values' in str(e)):
-            return jsonify({"Error":"Invaid Input! Model is expecting 4 features as input"})
-        if('could not convert string to float' in str(e)):
-            return jsonify({"Error":"Invaid Input! Model is expecting Interger features as input"})
-    
+
+api.add_resource(e_shop, '/predict', endpoint='predict')
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-#http://127.0.0.1:5000/predict?feat1=-10&feat2=20&feat3=4&feat4=-12
