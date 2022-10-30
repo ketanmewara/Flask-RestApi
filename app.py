@@ -16,10 +16,10 @@ def home():
 @app.route('/predict', methods=['GET','POST'])
 def predict():
     try:
-        feat1 = request.args.get('feat1')
-        feat2 = request.args.get('feat2')
-        feat3 = request.args.get('feat3')
-        feat4 = request.args.get('feat4')
+        feat1 = request.args.get('feat1',None)
+        feat2 = request.args.get('feat2',None)
+        feat3 = request.args.get('feat3',None)
+        feat4 = request.args.get('feat4',None)
 
         data = [[feat1,feat2,feat3,feat4]]
         
@@ -37,3 +37,6 @@ def predict():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+#http://127.0.0.1:5000/predict?feat1=-10&feat2=20&feat3=4&feat4=-12
