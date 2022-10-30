@@ -25,7 +25,8 @@ def predict():
         
         prediction = model.predict(data)
         class_prediction = labels[prediction[0]]
-        return {"prediction" : class_prediction}
+        
+        return jsonify(prediction=class_prediction)
             
     except ValueError as e: #Error handling
         # return jsonify({"Error":str(e)})
