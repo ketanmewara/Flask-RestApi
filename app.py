@@ -3,7 +3,7 @@ from flask_restful import Resource, Api, reqparse
 import pickle
 
 #load the model
-model = pickle.load(open('Models\model.pkl','rb'))
+model = pickle.load(open('model.pkl','rb'))
 
 labels = ['Rockstar', '2K', 'Zynga']
 
